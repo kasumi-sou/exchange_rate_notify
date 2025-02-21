@@ -11,6 +11,7 @@ cron.schedule("0 39 18 * * *", async () => {
 
 cron.schedule("0 0 0,12,16,20 * * 1-5", async () => {
 	reportCurrency();
+	console.log("success!");
 });
 
 
