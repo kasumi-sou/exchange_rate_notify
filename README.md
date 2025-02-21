@@ -15,7 +15,8 @@
     ```
     {
       "webHookUrl": "webhookのURL",
-      "apiKey": "1.で取得したAPIキー"
+      "apiKey": "1.で取得したAPIキー",
+      "threadId": "スレッドのid"
     }
     ```
 
