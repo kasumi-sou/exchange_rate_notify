@@ -17,49 +17,18 @@ cron.schedule("0 39 18 * * *", async () => {
 */
 
 // 月曜の処理
-cron.schedule("0 0 12-22/2 * * 1", async () => {
-	let result = null;
-	for (i = 0; i < 3; i++) {
-		try {
-			result = await reportCurrency(i);
-			console.log(`success! (attempt #${i})`);
-			break;
-		}
-		catch (e) {
-			console.error(e);
-		}
-		await sleep((2 ** i) * 1000);
-	}
-	if (!result) {
-		errorMessage();
-		return;
-	};
-});
+cron.schedule("0 0 12-22/2 * * 1", reportCurrencyWithRetry);
 
 // 火～金
-cron.schedule("0 0 0,12-22/2 * * 2-5", async () => {
-	let result = null;
-	for (i = 0; i < 3; i++) {
-		try {
-			result = await reportCurrency(i);
-			console.log(`success! (attempt #${i})`);
-			break;
-		}
-		catch (e) {
-			console.error(e);
-		}
-		await sleep((2 ** i) * 1000);
-	}
-	if (!result) {
-		errorMessage();
-		return;
-	};
-});
+cron.schedule("0 0 0,12-22/2 * * 2-5", reportCurrencyWithRetry);
 
 // 土曜
-cron.schedule("0 0 0,1 * * 6", async () => {
+cron.schedule("0 0 0,1 * * 6", reportCurrencyWithRetry);
+
+
+async function reportCurrencyWithRetry() {
 	let result = null;
-	for (i = 0; i < 3; i++) {
+	for (i = 0; i < 4; i++) {
 		try {
 			result = await reportCurrency(i);
 			console.log(`success! (attempt #${i})`);
@@ -74,8 +43,7 @@ cron.schedule("0 0 0,1 * * 6", async () => {
 		errorMessage();
 		return;
 	};
-});
-
+}
 
 async function reportCurrency(i) {
 	const [exchangeData, graph] = await Promise.all([
