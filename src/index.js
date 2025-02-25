@@ -1,9 +1,12 @@
 const cron = require("node-cron");
-const { apiKey } = require("../config.json");
-const { webHookUrl } = require("../config.json");
-const { threadId } = require("../config.json");
+const { apiKey, webHookUrl, threadId } = require("../config.json");
 const { default: axios } = require("axios");
 const { setTimeout: sleep } = require("node:timers/promises");
+
+if (!apiKey || !webHookUrl || !threadId) {
+	throw new Error("Invalid config.json");
+}
+
 
 /*
 cron.schedule("0 39 18 * * *", async () => {
@@ -16,7 +19,7 @@ cron.schedule("0 0 12-22/2 * * 1", async () => {
 	let result = null;
 	for (i = 0; i < 3; i++) {
 		try {
-			result = reportCurrency();
+			result = await reportCurrency();
 			console.log(`success! (attempt #${i++})`);
 			break;
 		}
@@ -36,7 +39,7 @@ cron.schedule("0 0 0,12-22/2 * * 2-5", async () => {
 	let result = null;
 	for (i = 0; i < 3; i++) {
 		try {
-			result = reportCurrency();
+			result = await reportCurrency();
 			console.log(`success! (attempt #${i++})`);
 			break;
 		}
@@ -56,7 +59,7 @@ cron.schedule("0 0 0,1 * * 6", async () => {
 	let result = null;
 	for (i = 0; i < 3; i++) {
 		try {
-			result = reportCurrency();
+			result = await reportCurrency();
 			console.log(`success! (attempt #${i++})`);
 			break;
 		}
