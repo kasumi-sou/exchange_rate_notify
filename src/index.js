@@ -98,11 +98,12 @@ async function reportCurrency() {
 		},
 	});
 	console.log(`${jstTime}: success!`);
+	return true;
 }
 
 async function errorMessage() {
 	await axios({
-		url: webHookUrl,
+		url: webHookUrl + `?thread_id=${threadId}`,
 		method: "post",
 		headers: {
 			"Accept": "application/json",
